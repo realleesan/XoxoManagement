@@ -7,6 +7,7 @@ import {
   FileTextOutlined,
   DollarOutlined,
   DatabaseOutlined,
+  ToolOutlined,
 } from '@ant-design/icons'
 
 const { Sider } = Layout
@@ -36,6 +37,11 @@ const menuItems = [
     key: '/customers',
     icon: <UserOutlined />,
     label: 'Khách hàng',
+  },
+  {
+    key: '/services',
+    icon: <ToolOutlined />,
+    label: 'Dịch vụ',
   },
   {
     key: '/finance',
