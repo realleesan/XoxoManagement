@@ -8,6 +8,8 @@ import productsRoutes from './routes/products.routes.js';
 import servicesRoutes from './routes/services.routes.js';
 import workflowsRoutes from './routes/workflows.routes.js';
 import invoicesRoutes from './routes/invoices.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
+import reportsRoutes from './routes/reports.routes.js';
 
 dotenv.config();
 
@@ -50,6 +52,8 @@ app.use('/api/products', productsRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/workflows', workflowsRoutes);
 app.use('/api/invoices', invoicesRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/reports', reportsRoutes);
 
 // 404 handler
 app.use((req, res) => {

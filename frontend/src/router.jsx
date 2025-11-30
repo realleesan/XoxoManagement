@@ -16,6 +16,7 @@ import CreateWorkflow from './pages/CreateWorkflow.jsx';
 import Invoices from './pages/Invoices.jsx';
 import CreateInvoice from './pages/CreateInvoice.jsx';
 import InvoiceDetail from './pages/InvoiceDetail.jsx';
+import Reports from './pages/Reports.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: '/invoices/:id',
         element: <InvoiceDetail />,
+      },
+      {
+        path: '/reports',
+        element: <Reports />,
       },
       // Add more routes here
     ],

@@ -49,6 +49,11 @@ const menuItems = [
     label: 'Hóa đơn',
   },
   {
+    key: '/reports',
+    icon: <FileTextOutlined />,
+    label: 'Báo cáo',
+  },
+  {
     key: '/finance',
     icon: <DollarOutlined />,
     label: 'Tài chính',
