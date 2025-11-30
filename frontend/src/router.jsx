@@ -3,6 +3,8 @@ import App from './App.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import Leads from './pages/Leads.jsx';
+import LeadDetail from './pages/LeadDetail.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: '/leads',
+        element: <Leads />,
+      },
+      {
+        path: '/leads/:id',
+        element: <LeadDetail />,
       },
       // Add more routes here
     ],
