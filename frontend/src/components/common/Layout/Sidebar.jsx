@@ -44,6 +44,11 @@ const menuItems = [
     label: 'Dịch vụ',
   },
   {
+    key: '/invoices',
+    icon: <FileTextOutlined />,
+    label: 'Hóa đơn',
+  },
+  {
     key: '/finance',
     icon: <DollarOutlined />,
     label: 'Tài chính',

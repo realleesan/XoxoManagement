@@ -13,6 +13,9 @@ import Services from './pages/Services.jsx';
 import Workflows from './pages/Workflows.jsx';
 import WorkflowKanban from './pages/WorkflowKanban.jsx';
 import CreateWorkflow from './pages/CreateWorkflow.jsx';
+import Invoices from './pages/Invoices.jsx';
+import CreateInvoice from './pages/CreateInvoice.jsx';
+import InvoiceDetail from './pages/InvoiceDetail.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -75,6 +78,18 @@ const router = createBrowserRouter([
       {
         path: '/workflows/:id',
         element: <WorkflowKanban />,
+      },
+      {
+        path: '/invoices',
+        element: <Invoices />,
+      },
+      {
+        path: '/invoices/create',
+        element: <CreateInvoice />,
+      },
+      {
+        path: '/invoices/:id',
+        element: <InvoiceDetail />,
       },
       // Add more routes here
     ],
