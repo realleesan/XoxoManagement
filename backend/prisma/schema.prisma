@@ -3,11 +3,11 @@
 
 generator client {
   provider = "prisma-client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // Users & Authentication
@@ -99,7 +99,7 @@ model Customer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  lead      Lead?
+  lead      Lead?    @relation(fields: [leadId], references: [id])
   invoices  Invoice[]
   products  Product[]
 

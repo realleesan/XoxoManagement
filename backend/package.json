@@ -6,22 +6,20 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^7.0.1",
+    "@paralleldrive/cuid2": "^3.0.4",
+    "@supabase/supabase-js": "^2.86.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^7.0.1"
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
