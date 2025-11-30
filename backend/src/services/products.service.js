@@ -138,12 +138,14 @@ export const createProduct = async (productData) => {
   const productId = createId();
   const now = new Date().toISOString();
 
-  // Use raw SQL
+  // Use raw SQL - images is TEXT[] array in PostgreSQL
+  const imagesArray = Array.isArray(images) && images.length > 0 ? images : [];
+  
   const result = await db.query(
     `INSERT INTO products (id, "customerId", name, description, status, images, "createdAt", "updatedAt")
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+     VALUES ($1, $2, $3, $4, $5, $6::text[], $7, $8)
      RETURNING *`,
-    [productId, customerId, name, description || null, status, JSON.stringify(images), now, now]
+    [productId, customerId, name, description || null, status, imagesArray, now, now]
   );
 
   if (!result.rows || result.rows.length === 0) {
@@ -192,8 +194,9 @@ export const updateProduct = async (id, updateData) => {
     values.push(status);
   }
   if (images !== undefined) {
-    updates.push(`images = $${paramIndex++}`);
-    values.push(JSON.stringify(images));
+    const imagesArray = Array.isArray(images) ? images : [];
+    updates.push(`images = $${paramIndex++}::text[]`);
+    values.push(imagesArray);
   }
 
   if (updates.length === 0) {

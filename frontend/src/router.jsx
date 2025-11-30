@@ -10,6 +10,9 @@ import CustomerDetail from './pages/CustomerDetail.jsx';
 import Products from './pages/Products.jsx';
 import ProductDetail from './pages/ProductDetail.jsx';
 import Services from './pages/Services.jsx';
+import Workflows from './pages/Workflows.jsx';
+import WorkflowKanban from './pages/WorkflowKanban.jsx';
+import CreateWorkflow from './pages/CreateWorkflow.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -60,6 +63,18 @@ const router = createBrowserRouter([
       {
         path: '/services',
         element: <Services />,
+      },
+      {
+        path: '/workflows',
+        element: <Workflows />,
+      },
+      {
+        path: '/workflows/create',
+        element: <CreateWorkflow />,
+      },
+      {
+        path: '/workflows/:id',
+        element: <WorkflowKanban />,
       },
       // Add more routes here
     ],

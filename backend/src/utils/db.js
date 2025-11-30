@@ -70,6 +70,11 @@ export const getClient = async () => {
   return client;
 };
 
-// Export pool để có thể đóng khi cần
-export default pool;
+// Export default là object với query và getClient
+const db = {
+  query,
+  getClient,
+};
+
+export default db;
 
