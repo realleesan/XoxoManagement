@@ -11,15 +11,18 @@ import {
   message,
   Space,
   Divider,
+  Modal,
 } from 'antd';
 import {
   ArrowLeftOutlined,
   EditOutlined,
   PhoneOutlined,
   MailOutlined,
+  UserAddOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { leadsService } from '../services/leads.service.js';
+import { customersService } from '../services/customers.service.js';
 import {
   LEAD_STATUS_LABELS,
   LEAD_STATUS_COLORS,
@@ -38,6 +41,8 @@ function LeadDetail() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activityForm] = Form.useForm();
+  const [convertModalVisible, setConvertModalVisible] = useState(false);
+  const [convertForm] = Form.useForm();
 
   useEffect(() => {
     fetchLeadDetail();
@@ -68,6 +73,18 @@ function LeadDetail() {
     }
   };
 
+  const handleConvertToCustomer = async (values) => {
+    try {
+      const response = await customersService.convertLeadToCustomer(id, values);
+      message.success('Chuyển đổi lead thành khách hàng thành công!');
+      setConvertModalVisible(false);
+      convertForm.resetFields();
+      navigate(`/customers/${response.customer.id}`);
+    } catch (error) {
+      message.error('Lỗi: ' + (error.response?.data?.error || error.message));
+    }
+  };
+
   if (loading || !lead) {
     return <div>Đang tải...</div>;
   }
@@ -81,6 +98,22 @@ function LeadDetail() {
         <Button type="primary" icon={<EditOutlined />} onClick={() => navigate(`/leads?edit=${id}`)}>
           Chỉnh sửa
         </Button>
+        {!lead.lead?.id && (
+          <Button 
+            type="default" 
+            icon={<UserAddOutlined />} 
+            onClick={() => {
+              convertForm.setFieldsValue({
+                name: lead.name,
+                phone: lead.phone,
+                email: lead.email,
+              });
+              setConvertModalVisible(true);
+            }}
+          >
+            Chuyển thành Khách hàng
+          </Button>
+        )}
       </Space>
 
       <Card title="Thông tin Lead" style={{ marginBottom: '24px' }}>
@@ -180,6 +213,69 @@ function LeadDetail() {
           )}
         </Timeline>
       </Card>
+
+      {/* Convert to Customer Modal */}
+      <Modal
+        title="Chuyển đổi Lead thành Khách hàng"
+        open={convertModalVisible}
+        onCancel={() => {
+          setConvertModalVisible(false);
+          convertForm.resetFields();
+        }}
+        footer={null}
+        width={600}
+      >
+        <Form
+          form={convertForm}
+          layout="vertical"
+          onFinish={handleConvertToCustomer}
+        >
+          <Form.Item
+            name="name"
+            label="Tên"
+            rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+          >
+            <Input placeholder="Tên khách hàng" />
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            label="Số điện thoại"
+            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
+          >
+            <Input placeholder="Số điện thoại" />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ type: 'email', message: 'Email không hợp lệ!' }]}
+          >
+            <Input placeholder="Email (tùy chọn)" />
+          </Form.Item>
+
+          <Form.Item
+            name="address"
+            label="Địa chỉ"
+          >
+            <Input.TextArea rows={3} placeholder="Địa chỉ (tùy chọn)" />
+          </Form.Item>
+
+          <Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                Chuyển đổi
+              </Button>
+              <Button onClick={() => {
+                setConvertModalVisible(false);
+                convertForm.resetFields();
+              }}>
+                Hủy
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }
