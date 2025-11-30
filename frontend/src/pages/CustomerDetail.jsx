@@ -16,6 +16,7 @@ import {
   PhoneOutlined,
   MailOutlined,
   HomeOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { customersService } from '../services/customers.service.js';
@@ -56,6 +57,13 @@ function CustomerDetail() {
         </Button>
         <Button type="primary" icon={<EditOutlined />} onClick={() => navigate(`/customers?edit=${id}`)}>
           Chỉnh sửa
+        </Button>
+        <Button 
+          type="default" 
+          icon={<PlusOutlined />} 
+          onClick={() => navigate('/products', { state: { customerId: id } })}
+        >
+          Thêm Sản phẩm
         </Button>
       </Space>
 

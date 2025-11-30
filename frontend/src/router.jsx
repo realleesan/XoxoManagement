@@ -7,6 +7,8 @@ import Leads from './pages/Leads.jsx';
 import LeadDetail from './pages/LeadDetail.jsx';
 import Customers from './pages/Customers.jsx';
 import CustomerDetail from './pages/CustomerDetail.jsx';
+import Products from './pages/Products.jsx';
+import ProductDetail from './pages/ProductDetail.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: '/customers/:id',
         element: <CustomerDetail />,
+      },
+      {
+        path: '/products',
+        element: <Products />,
+      },
+      {
+        path: '/products/:id',
+        element: <ProductDetail />,
       },
       // Add more routes here
     ],

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes.js';
 import leadsRoutes from './routes/leads.routes.js';
 import customersRoutes from './routes/customers.routes.js';
+import productsRoutes from './routes/products.routes.js';
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.get('/api', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/customers', customersRoutes);
+app.use('/api/products', productsRoutes);
 
 // 404 handler
 app.use((req, res) => {
