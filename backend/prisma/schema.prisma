@@ -1,0 +1,304 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users & Authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  SALES
+  TECHNICIAN
+  USER
+}
+
+// Leads & CRM
+model Lead {
+  id          String      @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  source      LeadSource
+  status      LeadStatus  @default(CAN_NHAC)
+  assignedTo  String?     // User ID
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  activities LeadActivity[]
+  customer   Customer?
+
+  @@map("leads")
+}
+
+enum LeadSource {
+  FACEBOOK
+  ZALO
+  TIKTOK
+  WEBSITE
+  OTHER
+}
+
+enum LeadStatus {
+  CAN_NHAC
+  HEN_GUI_ANH
+  HEN_QUA_SHOP
+  HEN_GUI_SAN_PHAM
+  KHACH_TOI_SHOP
+  DA_BAO_GIA_IM_LANG
+}
+
+// Lead Activities
+model LeadActivity {
+  id        String       @id @default(cuid())
+  leadId    String
+  type      ActivityType
+  content   String
+  createdAt DateTime     @default(now())
+
+  lead      Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("lead_activities")
+}
+
+enum ActivityType {
+  CALL
+  EMAIL
+  MESSAGE
+  NOTE
+  MEETING
+}
+
+// Customers
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  address   String?
+  leadId    String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lead      Lead?
+  invoices  Invoice[]
+  products  Product[]
+
+  @@map("customers")
+}
+
+// Products & Tracking
+model Product {
+  id          String        @id @default(cuid())
+  customerId  String
+  name        String        // Tên sản phẩm (ví dụ: "Túi xách LV")
+  description String?
+  status      ProductStatus @default(DANG_LAM)
+  images      String[]      // URLs của ảnh
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  customer    Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  workflows   Workflow[]
+  invoiceItems InvoiceItem[]
+
+  @@map("products")
+}
+
+enum ProductStatus {
+  DANG_LAM
+  DA_XONG
+  CO_VAN_DE
+  KHIEU_NAI
+}
+
+// Workflows & Operations
+model Workflow {
+  id          String        @id @default(cuid())
+  productId   String
+  name        String
+  status      WorkflowStatus @default(PENDING)
+  currentStage String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  product     Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  stages      WorkflowStage[]
+
+  @@map("workflows")
+}
+
+enum WorkflowStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  BLOCKED
+}
+
+model WorkflowStage {
+  id          String      @id @default(cuid())
+  workflowId  String
+  name        String      // "Vệ sinh", "Khâu vá", "Phục hồi màu", "Xi mạ"
+  order       Int
+  status      StageStatus @default(PENDING)
+  assignedTo  String?     // User ID
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime    @default(now())
+
+  workflow    Workflow    @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  tasks       WorkflowTask[]
+
+  @@map("workflow_stages")
+}
+
+enum StageStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  BLOCKED
+}
+
+model WorkflowTask {
+  id        String   @id @default(cuid())
+  stageId   String
+  name      String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  stage     WorkflowStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+
+  @@map("workflow_tasks")
+}
+
+// Services
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   // "Vệ sinh", "Khâu vá", "Phục hồi màu", "Xi mạ"
+  price       Decimal  @db.Decimal(10, 2)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+// Invoices & Finance
+model Invoice {
+  id          String        @id @default(cuid())
+  customerId  String
+  invoiceNo   String        @unique
+  totalAmount Decimal       @db.Decimal(10, 2)
+  status      InvoiceStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  customer    Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  items       InvoiceItem[]
+
+  @@map("invoices")
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+model InvoiceItem {
+  id        String   @id @default(cuid())
+  invoiceId String
+  productId String?
+  serviceId String?  // Service ID
+  name      String
+  quantity  Int      @default(1)
+  price     Decimal  @db.Decimal(10, 2)
+  notes     String?
+  images    String[] // Ảnh sản phẩm
+  qrCode    String?  // QR code data
+
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@map("invoice_items")
+}
+
+// Inventory
+model Material {
+  id          String    @id @default(cuid())
+  name        String
+  category    String    // "Da", "Chỉ", "Hóa chất"
+  unit        String    // "kg", "m", "lít"
+  quantity    Decimal   @db.Decimal(10, 2)
+  minQuantity Decimal?  @db.Decimal(10, 2) // Cảnh báo khi dưới mức này
+  expiryDate  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("materials")
+}
+
+// Financial Transactions
+model Transaction {
+  id          String            @id @default(cuid())
+  type        TransactionType
+  amount      Decimal           @db.Decimal(10, 2)
+  description String?
+  status      TransactionStatus @default(PENDING)
+  createdAt   DateTime          @default(now())
+
+  approvals   ExpenseApproval[]
+
+  @@map("transactions")
+}
+
+enum TransactionType {
+  REVENUE
+  EXPENSE
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAID
+}
+
+model ExpenseApproval {
+  id            String         @id @default(cuid())
+  transactionId String
+  approverId    String         // User ID
+  status        ApprovalStatus @default(PENDING)
+  notes         String?
+  createdAt     DateTime       @default(now())
+
+  transaction   Transaction    @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@map("expense_approvals")
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
