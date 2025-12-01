@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { Layout } from 'antd'
 import Header from './components/common/Layout/Header.jsx'
 import Sidebar from './components/common/Layout/Sidebar.jsx'
@@ -13,6 +14,17 @@ function App() {
   
   // Load user info if token exists
   useAuth()
+  const [collapsed, setCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth <= 768
+  })
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   if (isAuthPage) {
     return <Outlet />
@@ -20,9 +32,9 @@ function App() {
 
   return (
     <Layout className="app-layout">
-      <Sidebar />
-      <Layout style={{ marginLeft: 240 }}>
-        <Header />
+      <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
+      <Layout style={{ marginLeft: isMobile ? 0 : (collapsed ? 0 : 240) }}>
+        <Header collapsed={collapsed} onToggle={setCollapsed} />
         <Content className="app-content">
           <Outlet />
         </Content>

@@ -250,17 +250,17 @@ function Products() {
         </div>
 
         {/* Filters */}
-        <Space style={{ marginBottom: '16px', width: '100%' }} wrap>
+        <Space className="responsive-filter" style={{ marginBottom: '16px', width: '100%' }} wrap>
           <Input
+            className="responsive-input"
             placeholder="Tìm kiếm theo tên, mô tả..."
             prefix={<SearchOutlined />}
-            style={{ width: 300 }}
             onChange={(e) => handleSearch(e.target.value)}
             allowClear
           />
           <Select
+            className="responsive-select"
             placeholder="Lọc theo khách hàng"
-            style={{ width: 200 }}
             allowClear
             value={filters.customerId}
             onChange={(value) => handleFilterChange('customerId', value)}
@@ -276,8 +276,8 @@ function Products() {
             ))}
           </Select>
           <Select
+            className="responsive-select"
             placeholder="Lọc theo trạng thái"
-            style={{ width: 200 }}
             allowClear
             value={filters.status}
             onChange={(value) => handleFilterChange('status', value)}
@@ -291,22 +291,25 @@ function Products() {
         </Space>
 
         {/* Table */}
-        <Table
-          columns={columns}
-          dataSource={products}
-          loading={loading}
-          rowKey="id"
-          pagination={{
-            current: pagination.page,
-            pageSize: pagination.limit,
-            total: pagination.total,
-            showSizeChanger: true,
-            showTotal: (total) => `Tổng ${total} sản phẩm`,
-            onChange: (page, pageSize) => {
-              setPagination({ ...pagination, page, limit: pageSize });
-            },
-          }}
-        />
+        <div className="responsive-table">
+          <Table
+            columns={columns}
+            dataSource={products}
+            loading={loading}
+            rowKey="id"
+            scroll={{ x: 'max-content' }}
+            pagination={{
+              current: pagination.page,
+              pageSize: pagination.limit,
+              total: pagination.total,
+              showSizeChanger: true,
+              showTotal: (total) => `Tổng ${total} sản phẩm`,
+              onChange: (page, pageSize) => {
+                setPagination({ ...pagination, page, limit: pageSize });
+              },
+            }}
+          />
+        </div>
       </Card>
 
       {/* Create/Edit Modal */}
@@ -319,7 +322,7 @@ function Products() {
           form.resetFields();
         }}
         footer={null}
-        width={600}
+        style={{ maxWidth: '92vw' }}
       >
         <Form
           form={form}

@@ -249,17 +249,17 @@ function Invoices() {
         </Row>
 
         {/* Filters */}
-        <Space style={{ marginBottom: '16px', width: '100%' }} wrap>
+        <Space className="responsive-filter" style={{ marginBottom: '16px', width: '100%' }} wrap>
           <Input
+            className="responsive-input"
             placeholder="Tìm kiếm theo số HĐ, tên KH..."
             prefix={<SearchOutlined />}
-            style={{ width: 300 }}
             onChange={(e) => handleSearch(e.target.value)}
             allowClear
           />
           <Select
+            className="responsive-select"
             placeholder="Lọc theo trạng thái"
-            style={{ width: 200 }}
             allowClear
             value={filters.status}
             onChange={(value) => handleFilterChange('status', value)}
@@ -273,11 +273,13 @@ function Invoices() {
         </Space>
 
         {/* Table */}
+        <div className="responsive-table">
         <Table
           columns={columns}
           dataSource={invoices}
           loading={loading}
           rowKey="id"
+            scroll={{ x: 'max-content' }}
           pagination={{
             current: pagination.page,
             pageSize: pagination.limit,
@@ -289,6 +291,7 @@ function Invoices() {
             },
           }}
         />
+        </div>
       </Card>
     </div>
   );

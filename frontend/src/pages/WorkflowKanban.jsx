@@ -203,6 +203,7 @@ function WorkflowKanban() {
                 <Badge count={stage.tasks?.filter(t => !t.completed).length || 0} />
               </div>
             }
+            className="kanban-stage"
             style={{
               minWidth: '300px',
               flex: '0 0 auto',
@@ -300,6 +301,7 @@ function WorkflowKanban() {
           assignForm.resetFields();
         }}
         onOk={() => assignForm.submit()}
+        style={{ maxWidth: '92vw' }}
       >
         <Form form={assignForm} onFinish={handleAssign} layout="vertical">
           <Form.Item name="userId" label="Người phụ trách">
@@ -323,6 +325,7 @@ function WorkflowKanban() {
           taskForm.resetFields();
         }}
         onOk={() => taskForm.submit()}
+        style={{ maxWidth: '92vw' }}
       >
         <Form form={taskForm} onFinish={handleAddTask} layout="vertical">
           <Form.Item

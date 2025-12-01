@@ -17,3 +17,87 @@
   margin-bottom: 24px;
   color: #262626;
 }
+
+/* Header toggle button: hidden on desktop, visible on mobile */
+.header-toggle {
+  display: none;
+  font-size: 18px;
+  padding: 4px;
+}
+@media (max-width: 768px) {
+  .header-toggle {
+    display: inline-flex;
+  }
+  .app-content {
+    margin: 16px 8px;
+    padding: 12px;
+  }
+}
+
+/* Header user text: ellipsis on small screens, hide on very small */
+.header-user-text {
+  display: inline-block;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 480px) {
+  .header-user-text {
+    display: none;
+  }
+}
+
+/* Responsive helpers for filters, tables, modals */
+.responsive-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.responsive-filter .responsive-input {
+  width: 300px;
+}
+.responsive-filter .responsive-select {
+  width: 200px;
+}
+.responsive-table {
+  overflow-x: auto;
+}
+@media (max-width: 768px) {
+  .responsive-filter .responsive-input,
+  .responsive-filter .responsive-select {
+    width: 100%;
+  }
+  .app-content {
+    margin: 12px 8px;
+    padding: 10px;
+  }
+}
+
+/* Mobile typography & card spacing tweaks */
+@media (max-width: 480px) {
+  /* Reduce heading sizes */
+  h2.ant-typography, .app-content h2 {
+    font-size: 20px !important;
+    line-height: 1.2;
+  }
+
+  /* Reduce card paddings to save space */
+  .ant-card-body {
+    padding: 12px !important;
+  }
+
+  /* Reduce statistic title size */
+  .ant-statistic-title {
+    font-size: 13px !important;
+  }
+  .ant-statistic-content .ant-statistic-value {
+    font-size: 20px !important;
+  }
+
+  /* Kanban stage smaller */
+  .kanban-stage {
+    min-width: 220px !important;
+  }
+}

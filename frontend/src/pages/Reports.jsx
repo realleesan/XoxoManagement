@@ -207,16 +207,16 @@ function Reports() {
     <div style={{ padding: '24px' }}>
       <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Title level={2} style={{ margin: 0 }}>Báo cáo & Phân tích</Title>
-        <Space>
+        <Space className="responsive-filter">
           <RangePicker
             value={dateRange}
             onChange={(dates) => setDateRange(dates || [dayjs().subtract(30, 'day'), dayjs()])}
             format="DD/MM/YYYY"
           />
           <Select
+            className="responsive-select"
             value={groupBy}
             onChange={setGroupBy}
-            style={{ width: 120 }}
           >
             <Option value="day">Theo ngày</Option>
             <Option value="week">Theo tuần</Option>
@@ -319,14 +319,17 @@ function Reports() {
                 <Bar dataKey="value" fill="#1890ff" name="Doanh thu" />
               </BarChart>
             </ResponsiveContainer>
-            <Table
-              dataSource={topProducts}
-              columns={productsColumns}
-              rowKey="productId"
-              pagination={false}
-              size="small"
-              style={{ marginTop: '16px' }}
-            />
+            <div className="responsive-table">
+              <Table
+                dataSource={topProducts}
+                columns={productsColumns}
+                rowKey="productId"
+                pagination={false}
+                size="small"
+                style={{ marginTop: '16px' }}
+                scroll={{ x: 'max-content' }}
+              />
+            </div>
           </Card>
         </Col>
 
@@ -352,26 +355,32 @@ function Reports() {
                 <Tooltip formatter={(value) => formatCurrency(value)} />
               </PieChart>
             </ResponsiveContainer>
-            <Table
-              dataSource={topServices}
-              columns={servicesColumns}
-              rowKey="serviceId"
-              pagination={false}
-              size="small"
-              style={{ marginTop: '16px' }}
-            />
+            <div className="responsive-table">
+              <Table
+                dataSource={topServices}
+                columns={servicesColumns}
+                rowKey="serviceId"
+                pagination={false}
+                size="small"
+                style={{ marginTop: '16px' }}
+                scroll={{ x: 'max-content' }}
+              />
+            </div>
           </Card>
         </Col>
 
         {/* Top Customers */}
         <Col xs={24}>
           <Card title="Top Khách hàng">
-            <Table
-              dataSource={topCustomers}
-              columns={customersColumns}
-              rowKey="customerId"
-              pagination={{ pageSize: 10 }}
-            />
+            <div className="responsive-table">
+              <Table
+                dataSource={topCustomers}
+                columns={customersColumns}
+                rowKey="customerId"
+                pagination={{ pageSize: 10 }}
+                scroll={{ x: 'max-content' }}
+              />
+            </div>
           </Card>
         </Col>
 

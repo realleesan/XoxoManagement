@@ -38,7 +38,7 @@ function Register() {
       minHeight: '100vh',
       background: '#f0f2f5'
     }}>
-      <Card style={{ width: 400 }}>
+      <Card style={{ maxWidth: '92vw', width: 400, margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Đăng ký</h2>
         <Form
           name="register"

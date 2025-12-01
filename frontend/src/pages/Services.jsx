@@ -254,17 +254,17 @@ function Services() {
         </Row>
 
         {/* Filters */}
-        <Space style={{ marginBottom: '16px', width: '100%' }} wrap>
+        <Space className="responsive-filter" style={{ marginBottom: '16px', width: '100%' }} wrap>
           <Input
+            className="responsive-input"
             placeholder="Tìm kiếm theo tên, mô tả..."
             prefix={<SearchOutlined />}
-            style={{ width: 300 }}
             onChange={(e) => handleSearch(e.target.value)}
             allowClear
           />
           <Select
+            className="responsive-select"
             placeholder="Lọc theo danh mục"
-            style={{ width: 200 }}
             allowClear
             value={filters.category}
             onChange={(value) => handleFilterChange('category', value)}
@@ -278,22 +278,25 @@ function Services() {
         </Space>
 
         {/* Table */}
-        <Table
-          columns={columns}
-          dataSource={services}
-          loading={loading}
-          rowKey="id"
-          pagination={{
-            current: pagination.page,
-            pageSize: pagination.limit,
-            total: pagination.total,
-            showSizeChanger: true,
-            showTotal: (total) => `Tổng ${total} dịch vụ`,
-            onChange: (page, pageSize) => {
-              setPagination({ ...pagination, page, limit: pageSize });
-            },
-          }}
-        />
+        <div className="responsive-table">
+          <Table
+            columns={columns}
+            dataSource={services}
+            loading={loading}
+            rowKey="id"
+            scroll={{ x: 'max-content' }}
+            pagination={{
+              current: pagination.page,
+              pageSize: pagination.limit,
+              total: pagination.total,
+              showSizeChanger: true,
+              showTotal: (total) => `Tổng ${total} dịch vụ`,
+              onChange: (page, pageSize) => {
+                setPagination({ ...pagination, page, limit: pageSize });
+              },
+            }}
+          />
+        </div>
       </Card>
 
       {/* Create/Edit Modal */}
@@ -306,7 +309,7 @@ function Services() {
           form.resetFields();
         }}
         footer={null}
-        width={600}
+        style={{ maxWidth: '92vw' }}
       >
         <Form
           form={form}

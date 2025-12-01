@@ -190,33 +190,36 @@ function Customers() {
         </div>
 
         {/* Search */}
-        <Space style={{ marginBottom: '16px', width: '100%' }}>
+        <Space className="responsive-filter" style={{ marginBottom: '16px', width: '100%' }}>
           <Input
+            className="responsive-input"
             placeholder="Tìm kiếm theo tên, số điện thoại, email..."
             prefix={<SearchOutlined />}
-            style={{ width: 300 }}
             onChange={(e) => handleSearch(e.target.value)}
             allowClear
           />
         </Space>
 
         {/* Table */}
-        <Table
-          columns={columns}
-          dataSource={customers}
-          loading={loading}
-          rowKey="id"
-          pagination={{
-            current: pagination.page,
-            pageSize: pagination.limit,
-            total: pagination.total,
-            showSizeChanger: true,
-            showTotal: (total) => `Tổng ${total} khách hàng`,
-            onChange: (page, pageSize) => {
-              setPagination({ ...pagination, page, limit: pageSize });
-            },
-          }}
-        />
+        <div className="responsive-table">
+          <Table
+            columns={columns}
+            dataSource={customers}
+            loading={loading}
+            rowKey="id"
+            scroll={{ x: 'max-content' }}
+            pagination={{
+              current: pagination.page,
+              pageSize: pagination.limit,
+              total: pagination.total,
+              showSizeChanger: true,
+              showTotal: (total) => `Tổng ${total} khách hàng`,
+              onChange: (page, pageSize) => {
+                setPagination({ ...pagination, page, limit: pageSize });
+              },
+            }}
+          />
+        </div>
       </Card>
 
       {/* Create/Edit Modal */}
@@ -229,7 +232,7 @@ function Customers() {
           form.resetFields();
         }}
         footer={null}
-        width={600}
+        style={{ maxWidth: '92vw' }}
       >
         <Form
           form={form}

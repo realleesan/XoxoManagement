@@ -241,10 +241,10 @@ function Workflows() {
         </Row>
 
         {/* Filters */}
-        <Space style={{ marginBottom: '16px', width: '100%' }} wrap>
+        <Space className="responsive-filter" style={{ marginBottom: '16px', width: '100%' }} wrap>
           <Select
+            className="responsive-select"
             placeholder="Lọc theo trạng thái"
-            style={{ width: 200 }}
             allowClear
             value={filters.status}
             onChange={(value) => handleFilterChange('status', value)}
@@ -256,8 +256,8 @@ function Workflows() {
             ))}
           </Select>
           <Select
+            className="responsive-select"
             placeholder="Lọc theo sản phẩm"
-            style={{ width: 250 }}
             allowClear
             showSearch
             filterOption={(input, option) =>
@@ -275,22 +275,25 @@ function Workflows() {
         </Space>
 
         {/* Table */}
-        <Table
-          columns={columns}
-          dataSource={workflows}
-          loading={loading}
-          rowKey="id"
-          pagination={{
-            current: pagination.page,
-            pageSize: pagination.limit,
-            total: pagination.total,
-            showSizeChanger: true,
-            showTotal: (total) => `Tổng ${total} quy trình`,
-            onChange: (page, pageSize) => {
-              setPagination({ ...pagination, page, limit: pageSize });
-            },
-          }}
-        />
+        <div className="responsive-table">
+          <Table
+            columns={columns}
+            dataSource={workflows}
+            loading={loading}
+            rowKey="id"
+            scroll={{ x: 'max-content' }}
+            pagination={{
+              current: pagination.page,
+              pageSize: pagination.limit,
+              total: pagination.total,
+              showSizeChanger: true,
+              showTotal: (total) => `Tổng ${total} quy trình`,
+              onChange: (page, pageSize) => {
+                setPagination({ ...pagination, page, limit: pageSize });
+              },
+            }}
+          />
+        </div>
       </Card>
     </div>
   );

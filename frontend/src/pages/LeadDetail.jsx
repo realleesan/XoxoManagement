@@ -223,7 +223,7 @@ function LeadDetail() {
           convertForm.resetFields();
         }}
         footer={null}
-        width={600}
+        style={{ maxWidth: '92vw' }}
       >
         <Form
           form={convertForm}

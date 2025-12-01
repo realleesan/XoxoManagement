@@ -1,11 +1,11 @@
 import { Layout, Button, Dropdown, Avatar } from 'antd'
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
+import { UserOutlined, LogoutOutlined, MenuOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '../../../store/authStore.js'
 
 const { Header: AntHeader } = Layout
 
-function Header() {
+function Header({ collapsed, onToggle }) {
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
 
@@ -37,14 +37,22 @@ function Header() {
         zIndex: 100
       }}
     >
-      <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 600, color: '#1890ff' }}>
-        XoxoManagement
-      </h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <Button
+          className="header-toggle"
+          type="text"
+          icon={<MenuOutlined />}
+          onClick={() => onToggle?.((prev) => !prev)}
+        />
+        <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 600, color: '#1890ff' }}>
+          XoxoManagement
+        </h2>
+      </div>
       {user && (
         <Dropdown menu={{ items: menuItems }} placement="bottomRight">
           <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '8px' }}>
             <Avatar icon={<UserOutlined />} />
-            <span>{user.name} ({user.role})</span>
+            <span className="header-user-text">{user.name} ({user.role})</span>
           </div>
         </Dropdown>
       )}
