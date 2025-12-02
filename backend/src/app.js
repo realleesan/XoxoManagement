@@ -15,6 +15,19 @@ dotenv.config();
 
 const app = express();
 
+// Ensure requests forwarded from serverless (which may strip or not include '/api')
+// still match Express routes that are mounted under '/api/*'.
+app.use((req, res, next) => {
+  try {
+    if (typeof req.url === 'string' && !req.url.startsWith('/api')) {
+      req.url = '/api' + (req.url === '/' ? '' : req.url);
+    }
+  } catch (e) {
+    // ignore
+  }
+  next();
+});
+
 // Middleware
 const allowedOrigins = process.env.CORS_ORIGIN 
   ? process.env.CORS_ORIGIN.split(',')
