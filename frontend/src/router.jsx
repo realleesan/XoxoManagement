@@ -18,6 +18,7 @@ import CreateInvoice from './pages/CreateInvoice.jsx';
 import InvoiceDetail from './pages/InvoiceDetail.jsx';
 import Reports from './pages/Reports.jsx';
 import Inventory from './pages/Inventory.jsx';
+import Finance from './pages/Finance.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: '/inventory',
         element: <Inventory />,
+      },
+      {
+        path: '/finance',
+        element: <Finance />,
       },
       {
         path: '/reports',
