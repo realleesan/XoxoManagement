@@ -30,6 +30,10 @@ if (!global.__pgPool) {
     ssl: connectionString?.includes('supabase') || connectionString?.includes('vercel')
       ? { rejectUnauthorized: false }
       : false,
+    // Fail faster when a new client cannot be established (important for serverless)
+    connectionTimeoutMillis: 5000,
+    // Close idle clients after 10s to reduce resource usage in serverless
+    idleTimeoutMillis: 10000,
   });
 }
 
