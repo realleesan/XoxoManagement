@@ -24,6 +24,11 @@ const menuItems = [
     label: 'Quản lý Lead',
   },
   {
+    key: '/orders',
+    icon: <ShoppingOutlined />,
+    label: 'Đơn hàng',
+  },
+  {
     key: '/workflows',
     icon: <FileTextOutlined />,
     label: 'Quy trình sửa chữa',
@@ -65,21 +70,21 @@ const menuItems = [
   },
 ]
 
-function Sidebar({ collapsed = false, onCollapse } ) {
+function Sidebar({ collapsed = false, onCollapse }) {
   const navigate = useNavigate()
   const location = useLocation()
 
   return (
-    <Sider 
+    <Sider
       collapsible
       breakpoint="md"
       collapsedWidth={0}
       collapsed={collapsed}
       onCollapse={(c) => onCollapse?.(c)}
       onBreakpoint={(broken) => onCollapse?.(broken)}
-      width={240} 
+      width={240}
       trigger={null}
-      style={{ 
+      style={{
         background: '#fff',
         boxShadow: '2px 0 8px rgba(0,0,0,0.06)',
         position: 'fixed',
@@ -93,12 +98,12 @@ function Sidebar({ collapsed = false, onCollapse } ) {
     >
       <div
         style={{
-        padding: '16px 24px', 
-        borderBottom: '1px solid #f0f0f0',
-        background: '#1890ff',
-        color: '#fff',
-        fontSize: '18px',
-        fontWeight: 600
+          padding: '16px 24px',
+          borderBottom: '1px solid #f0f0f0',
+          background: '#1890ff',
+          color: '#fff',
+          fontSize: '18px',
+          fontWeight: 600
         }}
       >
         Xoxo
@@ -106,7 +111,7 @@ function Sidebar({ collapsed = false, onCollapse } ) {
       <Menu
         mode="inline"
         selectedKeys={[location.pathname]}
-        style={{ 
+        style={{
           height: 'calc(100% - 65px)',
           borderRight: 0,
           paddingTop: '8px'

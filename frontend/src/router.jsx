@@ -19,6 +19,9 @@ import InvoiceDetail from './pages/InvoiceDetail.jsx';
 import Reports from './pages/Reports.jsx';
 import Inventory from './pages/Inventory.jsx';
 import Finance from './pages/Finance.jsx';
+import Orders from './pages/Orders.jsx';
+import CreateOrder from './pages/CreateOrder.jsx';
+import OrderDetail from './pages/OrderDetail.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
@@ -81,6 +84,18 @@ const router = createBrowserRouter([
       {
         path: '/workflows/:id',
         element: <WorkflowKanban />,
+      },
+      {
+        path: '/orders',
+        element: <Orders />,
+      },
+      {
+        path: '/orders/create',
+        element: <CreateOrder />,
+      },
+      {
+        path: '/orders/:id',
+        element: <OrderDetail />,
       },
       {
         path: '/invoices',
