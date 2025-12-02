@@ -16,19 +16,24 @@ dotenv.config({ path: join(__dirname, '../../.env') });
 
 const { Pool } = pg;
 
-// Tạo connection pool
+// Tạo connection pool (reuse across serverless invocations)
 const connectionString = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL || process.env.POSTGRES_URL;
 
 if (!connectionString) {
   console.warn('⚠️  DATABASE_URL chưa được cấu hình trong .env');
 }
 
-const pool = new Pool({
-  connectionString: connectionString,
-  ssl: connectionString?.includes('supabase') || connectionString?.includes('vercel') 
-    ? { rejectUnauthorized: false } 
-    : false,
-});
+// Reuse pool when possible to avoid creating new pools on every invocation (important for serverless)
+if (!global.__pgPool) {
+  global.__pgPool = new Pool({
+    connectionString: connectionString,
+    ssl: connectionString?.includes('supabase') || connectionString?.includes('vercel')
+      ? { rejectUnauthorized: false }
+      : false,
+  });
+}
+
+const pool = global.__pgPool;
 
 // Helper function để query
 export const query = async (text, params) => {
